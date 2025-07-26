@@ -1,19 +1,24 @@
-# Use the official Go image
-FROM golang:1.23
+# Use official Go image as base
+FROM golang:1.21
 
+# Set working directory inside container
 WORKDIR /app
 
-# Copy code
+# Copy Go modules and download deps
+COPY go.mod go.sum ./
+RUN go mod download
+
+# Copy source code
 COPY . .
 
-# Install dependencies
-RUN go mod tidy
+# Build the Go binary
+RUN go build -o fi-mcp-server
 
-# Expose port
+# Set environment variable for port
 ENV FI_MCP_PORT=8080
 
-# Build app
-RUN go build -o main .
+# Expose the correct port
+EXPOSE 8080
 
-# Run app
-CMD ["./main"]
+# Run the binary
+CMD ["./fi-mcp-server"]
