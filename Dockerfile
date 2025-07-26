@@ -1,4 +1,4 @@
-FROM golang:1.23
+FROM golang:1.24
 
 WORKDIR /app
 
@@ -7,6 +7,8 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -o main .
+RUN go build -o server .
 
-CMD ["/app/main"]
+EXPOSE 8000
+
+CMD ["./server"]
